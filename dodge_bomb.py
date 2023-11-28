@@ -43,7 +43,6 @@ def main():
     kk_lst[(-5,-5)] =pg.transform.rotate(kk_img,-45)
     kk_lst[(-5,0)] =pg.transform.rotate(kk_img,0)
     kk_lst[(-5,5)] =pg.transform.rotate(kk_img,45)
-    accs = [a for a in range(1, 11)]
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_img2 = pg.transform.rotozoom(kk_img2, 0, 2.0)
     kk_rct = kk_img.get_rect()  # 練習３：こうかとんSurfaceのRectを抽出する
@@ -57,7 +56,6 @@ def main():
     time=0
     time2=1
     vx, vy = 0,0  # 練習２：爆弾の速度
-    clock = pg.time.Clock()
     tmr = 0
     vxx=1
     vyy=1
@@ -73,6 +71,7 @@ def main():
                 print("Game Over")
                 screen.blit(kk_img2,kk_rct)
                 pg.display.update()
+
         if do:   
             key_lst = pg.key.get_pressed()
             sum_mv = [0, 0]
@@ -81,35 +80,39 @@ def main():
                     sum_mv[0] += tpl[0]
                     sum_mv[1] += tpl[1]
             
-            
             screen.blit(bg_img, [0, 0])
             kk_rct.move_ip(sum_mv[0], sum_mv[1])
             if check_bound(kk_rct) != (True, True):
-                
-                    kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+                kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
             screen.blit(kk_lst[tuple(sum_mv)], kk_rct)  # 練習３：こうかとんを移動させる
             if time2 <10:
                 vx= (time2)*vxx
                 vy= (time2)*vyy
+
             elif time2>=10:
                 vx=10*vxx
                 vy=10*vyy
+
             yoko, tate = check_bound(bb_rct)
             if not yoko:  # 横方向にはみ出たら
                 vx*= -1
                 vxx*=-1
+
             if not tate:  # 縦方向にはみ出たら
                 vy *= -1
                 vyy*=-1
+                
             bb_rct.move_ip(vx,vy) 
             screen.blit(bb_img, bb_rct)
             pg.display.update()
             print(vx)
             tmr += 1
-            clock.tick(100)
             time+=1
             if time%100==99:
                 time2+=1
+
+
 if __name__ == "__main__":
     pg.init()
     main()
